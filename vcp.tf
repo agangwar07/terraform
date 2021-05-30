@@ -23,14 +23,14 @@ resource "aws_subnet" "myvpc-public" {
   }
 }
 
-resource "aws_subnet" "myvpc-public" {
+resource "aws_subnet" "myvpc-public1" {
   vpc_id                  = aws_vpc.myvpc.id
   cidr_block              = var.subnetpublicCIDRblock2
   map_public_ip_on_launch = var.mapPublicIP
   availability_zone       = var.availabilityZone1
 
   tags = {
-    Name = "myvpc-public"
+    Name = "myvpc-public1"
   }
 }
 
