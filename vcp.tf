@@ -77,7 +77,7 @@ resource "aws_nat_gateway" "myvpc-nat-gw" {
 }
 
 resource "aws_route_table" "myvpc-private" {
-  vpc_id = aws_vpc.my-vpc.id
+  vpc_id = aws_vpc.myvpc.id
   route {
     cidr_block     = var.destinationCIDRblock
     nat_gateway_id = aws_nat_gateway.myvpc-nat-gw.id
