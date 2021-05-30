@@ -18,8 +18,8 @@ module "redis" {
   family            = "redis5.0"
   description       = "Test elasticache redis."
 
-  subnet_ids = aws_subnet.myvpc-private.id
-  vpc_id     = aws_vpc.myvpc.id
+  subnet_ids = aws_subnet.myvpc-private
+  vpc_id     = aws_vpc.myvpc
 
   ingress_cidr_blocks = ["0.0.0.0/0"]
 
@@ -31,6 +31,6 @@ module "redis" {
   ]
 
   tags = {
-    Project = "Test"
+    Project = "myproject"
   }
 }
