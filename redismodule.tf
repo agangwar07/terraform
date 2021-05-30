@@ -3,7 +3,7 @@ module "redis" {
   version = "~> 1.5.0"
 
   name_prefix           = "core-example"
-  number_cache_clusters = 2
+  number_cache_clusters = 1
   node_type             = "cache.t3.small"
 
   engine_version           = "5.0.6"
@@ -17,9 +17,6 @@ module "redis" {
   apply_immediately = true
   family            = "redis5.0"
   description       = "Test elasticache redis."
-
-  subnet_group_name = "aws_subnet.myvpc-private"
-  vpc_id     = "aws_vpc.myvpc"
 
   ingress_cidr_blocks = ["0.0.0.0/0"]
 

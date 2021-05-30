@@ -11,7 +11,7 @@ variable "availabilityZone" {
      default = "us-east-1a"
 }
 variable "availabilityZone1" {
-     default = "us-east-2a"
+     default = "us-east-1b"
 }
 variable "instanceTenancy" {
     default = "default"
