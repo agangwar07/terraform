@@ -35,10 +35,21 @@ resource "aws_subnet" "myvpc-private" {
   }
 }
 
+resource "aws_subnet" "myvpc-private1" {
+  vpc_id                  = aws_vpc.myvpc.id
+  cidr_block              = var.subnetprivateCIDRblock
+  map_public_ip_on_launch = "false"
+  availability_zone       = var.availabilityZone
+
+  tags = {
+    Name = "myvpc-private1"
+  }
+}
+
 #NACL for private subnet
 resource "aws_network_acl" "mynacl" {
     vpc_id = aws_vpc.myvpc.id
-    subnet_ids = [ aws_subnet.myvpc-private.id ]
+    subnet_ids = [ aws_subnet.myvpc-private.id , aws_subnet.myvpc-private1.id]
 
   tags = {
       Name = "NACLs for private subnets"
@@ -51,7 +62,7 @@ resource "aws_eip" "myvpc-nat" {
 
 # Custom internet Gateway
 resource "aws_internet_gateway" "my-igw" {
-  vpc_id = aws_vpc.levelupvpc.id
+  vpc_id = aws_vpc.myvpc.id
 
   tags = {
     Name = "internet gateway"
@@ -59,7 +70,7 @@ resource "aws_internet_gateway" "my-igw" {
 }
 
 #Routing Table for the Custom VPC
-resource "aws_route_table" "my-public" {
+resource "aws_route_table" "myvpc-public" {
   vpc_id = aws_vpc.myvpc.id
   route {
     cidr_block = "0.0.0.0/0"
@@ -88,13 +99,30 @@ resource "aws_route_table" "myvpc-private" {
   }
 }
 
+resource "aws_route_table" "myvpc-private1" {
+  vpc_id = aws_vpc.myvpc.id
+  route {
+    cidr_block     = var.destinationCIDRblock
+    nat_gateway_id = aws_nat_gateway.myvpc-nat-gw.id
+  }
+
+  tags = {
+    Name = "myvpc-private"
+  }
+}
+
 # route associations private
 resource "aws_route_table_association" "myvpc-private" {
   subnet_id      = aws_subnet.myvpc-private.id
   route_table_id = aws_route_table.myvpc-private.id
 }
 
-resource "aws_route_table_association" "my-public" {
-  subnet_id      = aws_subnet.my-public.id
-  route_table_id = aws_route_table.my-public.id
+resource "aws_route_table_association" "myvpc-private1" {
+  subnet_id      = aws_subnet.myvpc-private1.id
+  route_table_id = aws_route_table.myvpc-private1.id
+}
+
+resource "aws_route_table_association" "myvpc-public" {
+  subnet_id      = aws_subnet.myvpc-public.id
+  route_table_id = aws_route_table.myvpc-public.id
 }

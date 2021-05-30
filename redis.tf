@@ -7,6 +7,7 @@ resource "aws_elasticache_cluster" "my-redis" {
   engine_version       = "3.2.10"
   port                 = 6379
   security_group_ids = [ aws_security_group.My_VPC_Security_Group.id ]
+  subnet_group_name = [aws_subnet.myvpc-private, aws_subnet.myvpc-private1]
 
   tags = {
    Name = "memcache cluster"

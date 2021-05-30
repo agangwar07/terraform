@@ -2,7 +2,7 @@
 resource "aws_db_subnet_group" "mariadb-subnets" {
   name        = "mariadb-subnets"
   description = "Amazon RDS subnet group"
-  subnet_ids  = [aws_subnet.myvpc-private.id]
+  subnet_ids  = [aws_subnet.myvpc-private.id,aws_subnet.myvpc-private1.id]
 }
 
 #RDS Parameters
