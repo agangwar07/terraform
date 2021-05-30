@@ -22,7 +22,7 @@ resource "aws_launch_configuration" "my-launchconfig" {
   image_id        = lookup(var.AMIS, var.region)
   instance_type   = "t2.micro"
   security_groups = [aws_security_group.My_VPC_Security_Group.id]
-  user_data       = "installtomcat.sh"
+
 
   lifecycle {
     create_before_destroy = true
@@ -33,18 +33,17 @@ resource "aws_launch_configuration" "my-launchconfig" {
 #Autoscaling Group
 resource "aws_autoscaling_group" "my-autoscaling" {
   name                      = "my-autoscaling"
-  vpc_zone_identifier       = [aws_subnet.myvpc-public.id]
+  vpc_zone_identifier       = [aws_subnet.myvpc-public.id, aws_subnet.myvpc-public1.id]
   launch_configuration      = aws_launch_configuration.my-launchconfig.name
   min_size                  = 2
   max_size                  = 2
-  health_check_grace_period = 200
-  health_check_type         = "ELB"
   load_balancers            = [aws_elb.my-elb.name]
   force_delete              = true
+  user_data       =   "installtomcat.sh"
 
   tag {
     key                 = "Name"
-    value               = "LevelUp Custom EC2 instance via LB"
+    value               = "My Custom EC2 instance via LB"
     propagate_at_launch = true
   }
 }

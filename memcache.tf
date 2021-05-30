@@ -1,4 +1,4 @@
-resource "aws_elasticache_cluster" "my-cluster" {
+resource "aws_elasticache_cluster" "mycluster" {
   cluster_id           = "clustermycluster"
   engine               = "memcached"
   node_type            = "cache.t3.small"

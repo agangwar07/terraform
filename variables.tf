@@ -28,12 +28,17 @@ variable "vpcCIDRblock" {
 variable "subnetpublicCIDRblock" {
     default = "10.0.1.0/24"
 }
-variable "subnetprivateCIDRblock" {
+
+variable "subnetpublicCIDRblock" {
     default = "10.0.2.0/24"
 }
 
-variable "subnetprivateCIDRblock1" {
+variable "subnetprivateCIDRblock" {
     default = "10.0.3.0/24"
+}
+
+variable "subnetprivateCIDRblock1" {
+    default = "10.0.4.0/24"
 }
 
 variable "destinationCIDRblock" {
