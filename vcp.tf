@@ -49,6 +49,28 @@ resource "aws_eip" "myvpc-nat" {
   vpc = true
 }
 
+# Custom internet Gateway
+resource "aws_internet_gateway" "my-igw" {
+  vpc_id = aws_vpc.levelupvpc.id
+
+  tags = {
+    Name = "internet gateway"
+  }
+}
+
+#Routing Table for the Custom VPC
+resource "aws_route_table" "my-public" {
+  vpc_id = aws_vpc.myvpc.id
+  route {
+    cidr_block = "0.0.0.0/0"
+    gateway_id = aws_internet_gateway.my-igw.id
+  }
+
+  tags = {
+    Name = "my-public"
+  }
+}
+
 resource "aws_nat_gateway" "myvpc-nat-gw" {
   allocation_id = aws_eip.myvpc-nat.id
   subnet_id     = aws_subnet.myvpc-public.id
@@ -70,4 +92,9 @@ resource "aws_route_table" "myvpc-private" {
 resource "aws_route_table_association" "myvpc-private" {
   subnet_id      = aws_subnet.myvpc-private.id
   route_table_id = aws_route_table.myvpc-private.id
+}
+
+resource "aws_route_table_association" "my-public" {
+  subnet_id      = aws_subnet.my-public.id
+  route_table_id = aws_route_table.my-public.id
 }
